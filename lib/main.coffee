@@ -8,7 +8,7 @@ define((require, exports) ->
       Initialize the jsApp
     ###
     onload: () ->
-      me.debug.renderHitBox = true
+      me.debug.renderHitBox = true  # turn on render box on spirits for DEBUG
 
       if !me.video.init('jsapp', 640, 480, false, 1.0)
         alert("Sorry but your browser does not support html 5 canvas.")

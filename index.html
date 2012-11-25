@@ -10,10 +10,13 @@
 					<span id="framecounter">(0/0 fps)</span>
 				</font>
 				<script type="text/javascript" src="melonJS-0.9.5.js"></script>
-				<script type="text/javascript" src="lib/sea.min.js"></script>
+				<script type="text/javascript" src="sea.min.js"></script>
 				<script type="text/javascript">
 					global = window;
-					seajs.use('main');
+					seajs.config({
+						base: "lib/"
+					})
+						.use('main');
 				</script>
 			</div>
 		</div>

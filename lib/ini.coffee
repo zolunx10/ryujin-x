@@ -10,12 +10,12 @@ define((require) ->
   global.ch = {}          # player characator info
 
   configKey = () ->
-    bindKey = me.input.bindKey
-    bindKey(input.KEY.LEFT, "left")
-    bindKey(input.KEY.RIGHT, "right")
+    input = me.input
+    input.bindKey(input.KEY.LEFT, "left")
+    input.bindKey(input.KEY.RIGHT, "right")
 
-    bindKey(input.KEY.Z, "shot")
-    bindKey(input.KEY.SHIFT, "slow")
+    input.bindKey(input.KEY.Z, "shot")
+    input.bindKey(input.KEY.SHIFT, "slow")
 
 
   return () ->
