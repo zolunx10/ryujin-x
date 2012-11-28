@@ -4,7 +4,7 @@ title: 基本框架
 tags: [melonJS, STG]
 ---
 # RyuJin系列笔记01: 搭建基本框架
-> commit: afb03011d23a7883b49b9c3a06e839fbbee637dc
+> commit: ef7722ca
 
 首页提过, 这是一个从c++输出为js的蛋疼demo, 于是系列的笔记也分成了[原教程的<del>不靠谱</del>解读](#review)和[自己的坑爹笔记](#on_js)两部分, 均为自我满足所用所以写到哪算哪吧~(滚. 
 
@@ -52,34 +52,41 @@ board就是战斗画面外的计分牌所在的那个框框啦. 简单调用Load
 `$ coffee -bc lib/*.coffee`  
 编译生成js即可. 
 
-本次commit实现了基本的画面绘制功能, 如下图:  
+本次commit实现了基本的画面绘制, 如下图:  
 ![自机有动画的哦!](http://ww3.sinaimg.cn/mw690/71b36129jw1dz9xl7a2zej.jpg)
 
-程序入口为 main.coffee , 其实就比me lonJS自带的tutorial_template多写了那么几行而已: 
+程序入口为 main.coffee , 其实就比me lonJS自带的tutorial_template多写了那么几行`me.game.add()`而已: 
 
-``` coffeescript
-	s = x for x in x
+```{% highlight coffeescript %}
+# ...
+# 绘制记分牌及边框
+for board in this.board
+  me.game.add(board, 1)
+# 绘制自机
+me.game.add(global.ch, 10)
+{% endhighlight %}
 ```
 
-{% highlight CoffeeScript %}
-	# ...
-	# 绘制记分牌及边框
-	for board in this.board
-	  me.game.add(board, 1)
-	# 绘制自机
-	me.game.add(global.ch, 10)
+边框board使用me.SpriteObject及相应图片绘制(顺便melonJS的[资源载入方法](http://www.melonjs.org/docs/symbols/me.loader.html#preload)真是相当亲切明了); 自机则由me.ObjectEntity扩展而来( entities.coffee ):
+
+```{% highlight coffeescript %}
+#...
+settings.image = "char"		# me.loader预载入的
+settings.spritewidth = 73
+settings.spriteheight = 73
+this.parent(x, y, settings)
 {% endhighlight %}
+```
 
-边框使用me.SpriteObject及相应图片绘制(顺便melonJS的[资源载入方法](http://www.melonjs.org/docs/symbols/me.loader.html#preload)真是相当亲切明了), 自机则由me.ObjectEntity扩展而来(参见 entities.coffee ), 
+主要注意的就是要手动调用父类构造函数`this.parent(x,y,settings)`传入初始坐标及参数. spritewidth和spriteheight控制单位尺寸, 因为自机每帧有不同的动画, 为了方便并非使用单独的图片而是一张拼接后的大图:  
+![自机用图片](https://github.com/zolunx10/ryujin-on-js/raw/master/dat/img/char/0.png)  
+(关于动画, 参见<http://www.melonjs.org/docs/symbols/me.AnimationSheet.html#addAnimation>说明.)
 
-{% highlight coffeescript %}
-	#...
-	settings.image = "char"
-	settings.spritewidth = 73
-	settings.spriteheight = 73
-	this.parent(x, y, settings)
-{% endhighlight %}
+------
 
-http://www.melonjs.org/docs/symbols/me.AnimationSheet.html#addAnimation
+PS. 看过melonJS的话, 会发现它用到了一个叫Tiled的高端工具来制作地图(用过RM的表示真是相当怀念...), 然后用 me.entityPool 来控制spirit绘制. 而它实际干的事情:
 
-顺便, 看过melonJS的话
+- 把上面me.ObjectEntity用到的x,y,settings等参数存在Tiled的地图文件里.
+- me.entityPool负责实例化这个ObjectEntity, 并控制它与当前地图的滚动\碰撞关系.  
+
+STG里并不需要像平台游戏中的障碍物之类的东西, 所以某就不用Tiled而是手动写了. 
