@@ -1,5 +1,5 @@
-define((require, exports) -> 
-  exports.resources = [
+define({
+  resources: [
     {
       name: "board10"
       type: "image"
@@ -25,11 +25,18 @@ define((require, exports) ->
       type: "image"
       src:  "dat/img/char/0.png"
     }
+    {
+      name: "enemy0"
+      type: "image"
+      src: "dat/img/enemy/0.png"
+    }
     # {
     #   name: "stage_blank"
     #   type: "tmx"
     #   src: "dat/blank.tmx"
     # }
+  ],
+  story: [
+    JSON.parse('[{"pattern":0,"cnt":80,"wait":120,"x":140,"y":-20,"sp":2,"blknd":[],"bltime":[],"color":0,"hp":100,"item":[]},{"pattern":0,"cnt":90,"wait":120,"x":170,"y":-20,"sp":2,"blknd":[],"bltime":[],"color":0,"hp":100,"item":[]},{"pattern":0,"cnt":100,"wait":120,"x":200,"y":-20,"sp":2,"blknd":[],"bltime":[],"color":0,"hp":100,"item":[]},{"pattern":0,"cnt":110,"wait":120,"x":230,"y":-20,"sp":2,"blknd":[],"bltime":[],"color":0,"hp":100,"item":[]}]'),
   ]
-  return
-)
+})

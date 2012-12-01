@@ -3,6 +3,7 @@ RyuJin on melonJS
 
 Repo's homepage: <http://zolunx10.github.com/ryujin-on-js/>
 
+## About
 This Repo is some personal stuff after studying [龍神録](http://dixq.net/rp/) and [melonJS](https://github.com/obiot/melonJS).   
 
 Inorder to run this demo, you should have [CoffeeScript](http://coffeescript.org/) installed, and compile the scripts under *lib/* :

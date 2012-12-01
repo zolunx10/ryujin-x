@@ -1,8 +1,8 @@
 define((require, exports) ->
   firstIni = require('ini')
-  resources = require('resources').resources
+  resources = require('resources')
   entities = require('entities')
-
+  
   jsApp = {
     ### 
       Initialize the jsApp
@@ -15,7 +15,7 @@ define((require, exports) ->
         return 
       me.audio.init("mp3,ogg,wav")
       me.loader.onload = this.loaded.bind(this)
-      me.loader.preload(resources)
+      me.loader.preload(resources.resources)
       me.state.change(me.state.LOADING)
 
     ###
@@ -32,17 +32,24 @@ define((require, exports) ->
       # me.levelDirector.loadLevel("stage_blank")
       firstIni()  # must after loadLevel() so that global.ch (.collisionMap) can work
 
+      # draw background
+      background = new me.ColorLayer('back', "#000000", 1)
+      me.game.add(background)
       # draw background boards
-      this.board = [
+      global.board = [
         new me.SpriteObject(0, 0, me.loader.getImage('board10') , 416, 16), 
-        new me.SpriteObject(0, 16, me.loader.getImage('board11') ),
-        new me.SpriteObject(0, 464, me.loader.getImage('board12') ),
-        new me.SpriteObject(416, 0, me.loader.getImage('board20') )
+        new me.SpriteObject(0, global.FIELD_Y, me.loader.getImage('board11') ),
+        new me.SpriteObject(0, global.FIELD_MAX_Y, me.loader.getImage('board12') ),
+        new me.SpriteObject(global.FIELD_MAX_X, 0, me.loader.getImage('board20') )
       ]
-      for board in this.board
-        me.game.add(board, 1)
-      # draw player 
-      me.game.add(global.ch, 10)
+      for board in global.board
+        me.game.add(board, 200)
+      # init player 
+      global.ch = new entities.PlayerCharacator(global.FIELD_MAX_X/2, global.FIELD_MAX_Y*3/4, {})
+      me.game.add(global.ch, 100)
+      # init enemies
+      enemyGenerator = new entities.EnemyGenerator(resources.story[0])
+      me.game.add(enemyGenerator, 10)
 
       me.game.sort()
       return 
